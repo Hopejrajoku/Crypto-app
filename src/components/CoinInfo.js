@@ -6,7 +6,7 @@ import { CircularProgress, ThemeProvider, createTheme, makeStyles } from '@mater
 import { Line } from 'react-chartjs-2';
 import { chartDays } from '../Config/data';
 import SelectButton from './SelectButton';
-import { Chart as ChartJS } from 'chart.js/auto';
+//import { Chart as ChartJS } from 'chart.js/auto';
 
 
 
@@ -46,7 +46,9 @@ const CoinInfo = ({ coin }) => {
 
   useEffect(() => {
     fetchHistoricData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currency, days]);
+  
 
   
 

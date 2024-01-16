@@ -86,6 +86,7 @@ const CoinPage = () => {
 
   useEffect(() => {
     fetchCoin();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
   const classes = useStyles();
@@ -94,7 +95,7 @@ const CoinPage = () => {
   
   
   return (
-    <ThemeProvider>
+    <ThemeProvider theme={darkTheme}>
     <div className={ classes.container }>
       <div className={ classes.sidebar}>
         <img 
