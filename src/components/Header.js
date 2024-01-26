@@ -1,14 +1,15 @@
-import { AppBar, Container, MenuItem, Select, Toolbar, Typography, makeStyles } from '@material-ui/core';
+import { AppBar, Container, MenuItem, Select, Toolbar, ThemeProvider, Typography, createTheme, makeStyles } from '@material-ui/core';
 import React from 'react';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { CryptoState } from '../CryptoContext';
+import AuthModal from './Authentication/AuthModal';
+import UserSidebar from './Authentication/UserSidebar';
 
 
 const useStyles = makeStyles(() =>({
     title:{
         flex: 1,
-        color: "#fff",
-        fontFamily: "barlow",
+        fontFamily: "tektur",
         letterSpacing: "4px",
         fontWeight: "bold",
         fontSize: "26px",
@@ -22,12 +23,22 @@ const Header = () => {
 
     const history = useHistory();
 
-    const {currency, setCurrency } = CryptoState();
+    const {currency, setCurrency, user } = CryptoState();
 
     console.log(currency);
 
+    const darkTheme = createTheme({
+        palette:{
+          primary:{
+            main: "#fff",
+          },
+          type: "dark",
+        },
+      });
+
 
     return (
+        <ThemeProvider theme={darkTheme}>
         <AppBar color='transparent' position='static'>
           <Container>
             <Toolbar>
@@ -37,7 +48,6 @@ const Header = () => {
                     width: 100,
                     height: 40,
                     marginRight: 15,
-                    border: '1px solid #fff',
                 }}
                 value={currency} 
                 onChange={(e) => setCurrency(e.target.value)}
@@ -45,9 +55,11 @@ const Header = () => {
                     <MenuItem value={"NGN"}>NGN</MenuItem>
                     <MenuItem value={"USD"}>USD</MenuItem>
                 </Select>
+                {user ? <UserSidebar/> : <AuthModal />}
             </Toolbar>
           </Container>
         </AppBar>
+        </ThemeProvider>
     )
 };
 

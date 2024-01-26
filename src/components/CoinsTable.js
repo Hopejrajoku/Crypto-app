@@ -1,4 +1,4 @@
-import { Container, LinearProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography, makeStyles } from '@material-ui/core';
+import { Container, LinearProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, ThemeProvider, Typography, createTheme, makeStyles } from '@material-ui/core';
 import React, { useEffect, useState } from 'react'
 import { CryptoState } from '../CryptoContext';
 import axios from 'axios';
@@ -9,7 +9,6 @@ import { Pagination } from '@material-ui/lab';
 
 const useStyles = makeStyles(() =>({
     main:{
-        color: "#000",
         fontFamily: "barlow",
         letterSpacing: "4px",
         fontSize: "26px",
@@ -39,21 +38,10 @@ const CoinsTable = () => {
     const history = useHistory();
 
     const [search, setSearch] = useState("");
-   
-
-    const [coins, setCoins] = useState([]);
-    const [loading, setLoading] = useState(false);
 
 
-    const {currency, symbol} = CryptoState();
+    const {currency, symbol, coins, loading, fetchCoins} = CryptoState();
 
-    const fetchCoins = async () => {
-        setLoading(true);
-        const { data }= await axios.get (CoinList(currency));
-
-        setCoins(data);
-        setLoading(false);
-    };
 
     console.log(coins)
 
@@ -69,13 +57,23 @@ const CoinsTable = () => {
         ))
     };
 
+    const darkTheme = createTheme({
+        palette:{
+          primary:{
+            main: "#fff",
+          },
+          type: "dark",
+        },
+      });
+
    
     const classes= useStyles();
-  return (
+  return ( 
+  <ThemeProvider theme={darkTheme}>
         <Container style={{ textAlign: 'center' }}>
             <Typography className={classes.main}
             variant="h4"
-            style={{ margin: 18, fontFamily: "tektur" , fontWeight: "bold,"}}
+            style={{ margin: 18, fontFamily: "tektur"}}
             >
                 Coin Prices By Market Cap
             </Typography>
@@ -86,13 +84,12 @@ const CoinsTable = () => {
                 marginBottom: 20, 
                 width: "100%",  
                 borderRadius: "10px",
-                color: "#000",
             }}
             onChange={(e) => setSearch(e.target.value)}
             />
             <TableContainer>
                 {loading ? (
-                    <LinearProgress style={{ backgroundColor: "#000" }} />
+                    <LinearProgress style={{ backgroundColor: "red" }} />
                 ): (
                     <Table>
                         <TableHead style={{ backgroundColor: "#02198b"}} >
@@ -192,6 +189,7 @@ const CoinsTable = () => {
             }}
             />
         </Container>
+    </ThemeProvider>
   )
 }
 

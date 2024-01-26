@@ -4,9 +4,11 @@ import { useParams } from 'react-router-dom';
 import { CryptoState } from '../CryptoContext';
 import axios from 'axios';
 import { SingleCoin } from '../Config/api';
-import { LinearProgress, ThemeProvider, Typography, createTheme, makeStyles } from '@material-ui/core';
+import { Button, LinearProgress, ThemeProvider, Typography, createTheme, makeStyles } from '@material-ui/core';
 import ReactHtmlParser from 'react-html-parser';
 import { numberWithCommas } from '../components/Banner/Carousel';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 
 const useStyles = makeStyles((theme) =>({
@@ -46,11 +48,15 @@ const useStyles = makeStyles((theme) =>({
     padding: 25,
     paddingTop: 10,
     width: "100%",
+    
+    //Make it Responsive
+
+    [theme.breakpoints.down("sm")]:{
+      flexDirection: "column",
+      alignItems: "center",
+    },
     [theme.breakpoints.down("md")]:{
       display: "flex",
-      justifyContent: "space-around",
-    },
-    [theme.breakpoints.down("sm")]:{
       flexDirection: "column",
       alignItems: "center",
     },
@@ -60,6 +66,8 @@ const useStyles = makeStyles((theme) =>({
 
   },
 }));
+
+
 
 
 const CoinPage = () => {
@@ -75,7 +83,7 @@ const CoinPage = () => {
 
   const { id } = useParams();
   const [ coin, setCoin ] = useState();
-  const {currency, symbol} = CryptoState();
+  const {currency, symbol, user, watchlist, setAlert} = CryptoState();
   const fetchCoin = async() => {
     const { data } = await axios.get(SingleCoin(id));
 
@@ -83,6 +91,53 @@ const CoinPage = () => {
   };
 
   console.log(coin);
+
+  const inWatchlist = watchlist.includes(coin?.id);
+
+  const addToWatchlist = async() => {
+    const coinRef = doc(db, "watchlist", user.uid);
+  
+    try {
+      await setDoc(coinRef,
+        {coins:watchlist?[...watchlist, coin?.id] : [coin?.id],
+        });
+
+        setAlert({
+          open: true,
+          message: `${coin.name} Added to Watchlist !`,
+          type: "Success",
+      });
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: error.message,
+        type: "error",
+    });
+    }
+  }
+
+  const removeFromWatchlist = async() => {
+    const coinRef = doc(db, "watchlist", user.uid);
+  
+    try {
+      await setDoc(coinRef,
+        {coins: watchlist.filter((watch) => watch !== coin?.id)},
+        {merge : "true"}
+        );
+
+        setAlert({
+          open: true,
+          message: `${coin.name} Removed from Watchlist !`,
+          type: "Success",
+      });
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: error.message,
+        type: "error",
+    });
+    }
+  };
 
   useEffect(() => {
     fetchCoin();
@@ -140,6 +195,19 @@ const CoinPage = () => {
               )}M
             </Typography>
           </span>
+          {user && (
+            <Button
+            variant="outlined"
+            style={{
+              width:"100%",
+              height: 40,
+              backgroundColor: inWatchlist ? "red" : "blue",
+            }}
+            onClick={inWatchlist ? removeFromWatchlist : addToWatchlist}
+            >
+              {inWatchlist? "Remove from Watchlist" : "Add to Watchlist"}
+            </Button>
+          )}
         </div>
       </div>
 

@@ -8,24 +8,6 @@
     box-sizing: border-box;
     scroll-behavior: smooth;
 }
-.MuiAppBar-colorTransparent {
-    color: rgb(0, 0, 0);
-    background-image: linear-gradient(45deg, rgb(4, 4, 141), rgb(4, 4, 141), rgb(4, 4, 141));
-}
-
-.MuiSelect-outlined.MuiSelect-outlined {
-    /* background: white; */
-    outline-color: rgb(185, 183, 183);
-    color: white;
-    padding-right: 32px;
-}
-.MuiSelect-icon {
-    top: calc(50% - 12px);
-    color: #ffffff;
-    right: 0;
-    position: absolute;
-    pointer-events: none;
-}
 
 a {
     text-decoration: none;
