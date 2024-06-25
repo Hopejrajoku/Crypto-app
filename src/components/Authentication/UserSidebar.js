@@ -166,16 +166,17 @@ export default function UserSidebar() {
 
                       return (
                         <div className={classes.coin}>
-                          <span>{coin.name}</span>
+                          <span style={{ color: "white"}}>{coin.name}</span>
                           <span
                           style={{
                             display: "flex",
-                            gap: 8
+                            gap: 8,
+                            color: "white",
                           }}>
                             {symbol}
                             {numberWithCommas(coin.current_price.toFixed(2))}
                             <AiFillDelete
-                            style={{ cursor: "pointer"}}
+                            style={{ cursor: "pointer", color: "red",}}
                             fontSize="16"
                             onClick={() => removeFromWatchlist(coin)}
                             />

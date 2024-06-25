@@ -23,7 +23,7 @@ const useStyles = makeStyles(() =>({
     },
     pagination: {
         "& .MuiPaginationItem-root":{
-            color: "blue"
+            color: "white"
         },
     },
     

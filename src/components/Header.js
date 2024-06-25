@@ -12,7 +12,7 @@ const useStyles = makeStyles(() =>({
         fontFamily: "tektur",
         letterSpacing: "4px",
         fontWeight: "bold",
-        fontSize: "26px",
+        fontSize: "20px",
         cursor: "pointer",
     },
 }));

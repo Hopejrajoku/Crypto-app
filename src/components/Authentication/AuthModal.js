@@ -87,7 +87,9 @@ export default function AuthModal() {
         width: 85,
         height: 40,
         backgroundColor: "blue",
-      }}onClick={handleOpen}
+        color: "white",
+      }}
+      onClick={handleOpen}
       >Login</Button>
       <Modal
         aria-labelledby="transition-modal-title"
