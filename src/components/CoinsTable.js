@@ -80,6 +80,7 @@ const CoinsTable = () => {
             <TextField 
             label="Search For Any Coin..." 
             variant="outlined"
+            className={classes.search}
             style={{ 
                 marginBottom: 20, 
                 width: "100%",  
@@ -111,7 +112,7 @@ const CoinsTable = () => {
                         </TableHead>
                         <TableBody>
                             {handleSearch()
-                            .slice(( page - 1 ) * 10 ,(page - 1) *10 + 10)
+                            .slice(( page - 1 ) * 10 ,( page - 1) *10 + 10)
                             .map(row=>{
                                 const profit = row.price_change_percentage_24h> 0;
 
@@ -183,7 +184,7 @@ const CoinsTable = () => {
             }}
             classes={{ ul: classes.pagination}}
             count={(handleSearch()?.length/10).toFixed(0)}
-            onChange={(_, value) => {
+            onChange={(_ , value) => {
                 setPage(value);
                 window.scroll(0, 450);
             }}
